@@ -10,15 +10,22 @@ int valueBlue;
 int percent = 0;
 int prevPercent = 0;
 
-float time = 3.14 * 1.5;
+float time = 3.14 * 1.50;
 
 boolean isDown = false;
 
 void setup() 
 {
   pinMode(red, OUTPUT);
+  analogWrite(red, 255); 
+
   pinMode(green, OUTPUT);
+  analogWrite(green, 255);
+  
   pinMode(blue, OUTPUT);
+  analogWrite(blue, 255);
+  
+  Serial.begin(9600);
   
   randomSeed(analogRead(0));
   
@@ -30,6 +37,8 @@ void loop()
   time += 0.01;
   
   float sinY = sin(time) + 1;
+  
+  Serial.println(sinY);
   
   prevPercent = percent;
   percent = sinY * 50;
