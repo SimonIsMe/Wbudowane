@@ -36,7 +36,5 @@ void loop(void)
   ledVal = constrain(ledVal, 0, 255);
   
   analogWrite(ledPin, ledVal);
-  
-  delay(10);
 }
 

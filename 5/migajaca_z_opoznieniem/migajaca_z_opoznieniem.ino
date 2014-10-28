@@ -1,72 +1,31 @@
-int pin = 13;
-int pinPast = 12;
-int buttonPin = 2;
-volatile int state = LOW;
+#define EPS 10
+#define SIZE 100
 
-unsigned long currentTime;
-String polecenia = "";
+short pinLed = 12;
+short pinBtn = 2;
+boolean queue[SIZE];
 
-void setup()
+void setup(void)
 {
-  pinMode(pin, OUTPUT);
-  pinMode(pinPast, OUTPUT);
-  pinMode(buttonPin, INPUT);
-
-  Serial.begin(9600);
-  Serial.print(currentTime);
+  pinMode(pinLed, OUTPUT);
+  pinMode(pinBtn, INPUT);
+  for (int i = 0; i < SIZE; i++) 
+    queue[i] = false;
 }
 
-void loop()
-{
-  
-  currentTime = millis();  
-  
-  if (digitalRead(buttonPin) == HIGH) {    
-     blink();
-     delay(150);
-  }
-  
-  if (getPierwsze() != 0 && currentTime >= getPierwsze()) {
-    if (digitalRead(pinPast) == HIGH) {
-      digitalWrite(pinPast, LOW);
-       digitalWrite(pin, LOW);
-    } else {
-      digitalWrite(pinPast, HIGH);
-       digitalWrite(pin, HIGH);
-    }
-   
-    delPierwsze();
-  }
-}
+short btnState;
+short pos = 0;
 
-void blink()
+void loop(void)
 {
-  unsigned long time = millis() + 1000;  
-  polecenia = polecenia + time + ",";
-  Serial.println(polecenia);
+  if (queue[pos] == true)
+    digitalWrite(pinLed, HIGH);
+  else
+    digitalWrite(pinLed, LOW);
   
-  state = !state;
+  btnState = digitalRead(pinBtn);
+  queue[pos++] = btnState == HIGH;
+  if (pos == SIZE) pos = 0;
+  
+  delay(EPS);
 }
-
-unsigned long getPierwsze()
-{
-  int dokad = polecenia.indexOf(',');
-  String sCzas = polecenia.substring(0, dokad);
-  
-  unsigned long toReturn = 0;
-  int pozycji = sCzas.length();
-  
-  for (int i = 0; i < pozycji; i++) {
-    toReturn *= 10;
-    toReturn += (int)(sCzas[i] - '0');
-  }
-  
-  return toReturn;
-}
-
-void delPierwsze()
-{
-  int dokad = polecenia.indexOf(',');
-  polecenia = polecenia.substring(dokad + 1);
-}
-
