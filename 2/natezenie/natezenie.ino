@@ -27,28 +27,27 @@ void loop(void)
   btnLVal = digitalRead(buttonLeftPin);
   btnRVal = digitalRead(buttonRightPin);
   
+  counter++;
+  if (counter % 100 == 0) {
+    Serial.print(photocellVal);
+    Serial.print(" => ");
+    Serial.println(ledVal);
+    counter = 0;
+  } 
+  
   if (btnLVal == HIGH) {
     Serial.println("L");
     minCell = photocellVal;
-    maxCell = 1023;
-    Serial.print("[");
-    Serial.print(minCell);
-    Serial.print(",");
-    Serial.print(maxCell);
-    Serial.println("]");
+  //  maxCell = 1023;
   }
   if (btnRVal == HIGH) {
     Serial.println("R");    
     maxCell = photocellVal;
-    minCell = 0;
-    Serial.print("[");
-    Serial.print(minCell);
-    Serial.print(",");
-    Serial.print(maxCell);
-    Serial.println("]");
+   // minCell = 0;
   }
   
-  photocellVal = 1023 - photocellVal;
+  photocellVal = constrain(photocellVal, minCell, maxCell);
+  photocellVal = maxCell - photocellVal + minCell;
   ledVal = map(photocellVal, minCell, maxCell, 0, 255);
   if (ledVal < 0) {
     ledVal = 0;
@@ -59,13 +58,6 @@ void loop(void)
   
   analogWrite(ledPin, ledVal);
   
-  counter++;
-  if (counter % 100 == 0) {
-    Serial.print(photocellVal);
-    Serial.print(" => ");
-    Serial.println(ledVal);
-    counter = 0;
-  }  
-  
   delay(10);
 }
+
