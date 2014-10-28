@@ -25,8 +25,6 @@ void setup()
   pinMode(blue, OUTPUT);
   analogWrite(blue, 255);
   
-  Serial.begin(9600);
-  
   randomSeed(analogRead(0));
   
   losujKolory();
@@ -37,8 +35,6 @@ void loop()
   time += 0.01;
   
   float sinY = sin(time) + 1;
-  
-  Serial.println(sinY);
   
   prevPercent = percent;
   percent = sinY * 50;
