@@ -3,6 +3,7 @@ int pinHall = 0;
 int pinBuzz = 10;
 int pinLed  = 4;
 int destVal = 0;
+boolean found = false;
 
 void setup(void) 
 {
@@ -35,13 +36,16 @@ void loop(void)
   Serial.print(destVal); Serial.print(" ");
   Serial.println(rd);
   
-  dist = abs(destVal - rd);
-  if (dist < 100) {
-    led = HIGH;
-    wait = 0; 
-  } else {
-    led = LOW;
-    wait = floor(dist / 100.0 * 150.0);
+  if (!found) {
+    dist = abs(destVal - rd);
+    if (dist < 100) {
+      led = HIGH;
+      wait = 0; 
+      found = true;
+    } else {
+      led = LOW;
+      wait = floor(dist / 100.0 * 150.0);
+    }
   }
   
   digitalWrite(pinLed, led);

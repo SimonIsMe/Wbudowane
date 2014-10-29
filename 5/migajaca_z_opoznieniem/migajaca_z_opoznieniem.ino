@@ -18,10 +18,7 @@ short pos = 0;
 
 void loop(void)
 {
-  if (queue[pos] == true)
-    digitalWrite(pinLed, HIGH);
-  else
-    digitalWrite(pinLed, LOW);
+    digitalWrite(pinLed, queue[pos]?HIGH:LOW);
   
   btnState = digitalRead(pinBtn);
   queue[pos++] = btnState == HIGH;

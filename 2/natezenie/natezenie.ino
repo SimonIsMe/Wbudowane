@@ -33,7 +33,7 @@ void loop(void)
   photocellVal = constrain(photocellVal, minCell, maxCell);
   photocellVal = maxCell - photocellVal + minCell;
   ledVal = map(photocellVal, minCell, maxCell, 0, 255);
-  ledVal = constrain(ledVal, 0, 255);
+  //ledVal = constrain(ledVal, 0, 255);
   
   analogWrite(ledPin, ledVal);
 }
