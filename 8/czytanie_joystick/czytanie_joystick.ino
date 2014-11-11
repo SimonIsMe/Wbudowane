@@ -11,7 +11,7 @@ short valX, valY;
 const short acceptTime = 2000; //  czas (w ms) po upływie, którego nie przyznaje się punktów
 const short roundDelayTime = 200;
 
-short currentRound = 0; 
+//short currentRound = 0; 
 short ledNo;
 
 unsigned int roundStartTime;
@@ -49,6 +49,8 @@ void initNewGame()
   Serial.println(input);
   gameTime = input * 1000;
   gameStartTime = millis();
+  
+  pointsTotal = 0;
 }
 
 void nextRound()

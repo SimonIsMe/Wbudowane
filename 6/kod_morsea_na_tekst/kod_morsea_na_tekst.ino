@@ -3,7 +3,8 @@ int pinLed = 12;
 int pinBuzzer = 10;
 
 int dlugoscKropki = 300;  //  maksymalny czas na kropkę w ms
-int nacisniecia[5];
+int maxNacisniec = 100;
+int nacisniecia[100];
 int  i = 0;
 String tekst = "";
 
@@ -24,7 +25,13 @@ void setup() {
 void loop() {
   int buttonState = digitalRead(pinButton);
   time = millis();
-  
+
+  if (nacisniecia[0] != -1 && time - timeBuffor >= 1000 && timeBuffor > 0) {
+    nacisnieciaNaLitere();
+    clearNacisniecia();
+    i = 0;
+  }
+ 
   if (buttonState != state) {
     //  zmieniono stan przycisku
     state = buttonState;
@@ -39,24 +46,32 @@ void loop() {
           //  kontynuuję pisanie kropek i kresek
         } else if (time - timeBuffor < 3 * dlugoscKropki) {
           //  nowa litera
-          nacisnieciaNaLitere();
-          clearNacisniecia();
-          i = 0;
+          if (nacisniecia[0] != -1) {
+            nacisnieciaNaLitere();
+            clearNacisniecia();
+            i = 0;
+          }
         } else {
           //  nowy wyraz
-          nacisnieciaNaLitere();
-          clearNacisniecia();
-          i = 0;
-          tekst = tekst + " ";
+          if (nacisniecia[0] != -1) {
+            nacisnieciaNaLitere();
+            clearNacisniecia();
+            i = 0;
+          }
+          if (tekst.length() > 0 && tekst.substring(tekst.length() - 1) != " ") {
+            tekst = tekst + " ";
+          }
         }
       } else {
         //Serial.print("Nacisniecie trwalo trwalo ");
         //Serial.println(time - timeBuffor);
         
-        //  jak długo nasiskam
+        //  jak długo naciskam
         if (time - timeBuffor < dlugoscKropki) {
+          //wstaw(1);
           nacisniecia[i] = 1;
         } else {
+          //wstaw(2);
           nacisniecia[i] = 2;
         }
         i++;
@@ -78,25 +93,23 @@ void loop() {
   delay(10);
 }
 
+void wstaw(int wartosc) 
+{
+  for (int k = 3; k >= 0; k++) {
+    nacisniecia[k + 1] = nacisniecia[k];
+  }
+  nacisniecia[0] = wartosc;
+}
+
 void clearNacisniecia() 
 {
-  for (int k = 0; k < 5; k++) {
+  for (int k = 0; k < maxNacisniec; k++) {
     nacisniecia[k] = -1;
   }
 }
 
 void nacisnieciaNaLitere()
 {
-  
-  //Serial.print("znakow ");
-  //Serial.println(i);
-  
-  /*for (int k = 0; k < i; k++) {
-    Serial.print(" ");
-    Serial.print(nacisniecia[k]);
-  }
-  Serial.println("");*/
-  
   if (i == 1) {
     if (nacisniecia[0] == 1) {
       tekst = tekst + "E";
