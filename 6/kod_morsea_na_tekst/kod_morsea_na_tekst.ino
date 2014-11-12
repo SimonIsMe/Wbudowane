@@ -1,6 +1,6 @@
 int pinButton = 2;
-int pinLed = 12;
-int pinBuzzer = 10;
+int pinLed = 4;
+int pinBuzzer = 3;
 
 int dlugoscKropki = 300;  //  maksymalny czas na kropkę w ms
 int maxNacisniec = 100;
@@ -38,8 +38,6 @@ void loop() {
 
     if (timeBuffor > 0) {
       if (state == HIGH) {
-        //Serial.print("Przerwa trwala ");
-        //Serial.println(time - timeBuffor);
         
         // jak długa jest przerwa?
         if (time - timeBuffor < dlugoscKropki) {
@@ -68,15 +66,13 @@ void loop() {
         
         //  jak długo naciskam
         if (time - timeBuffor < dlugoscKropki) {
-          //wstaw(1);
           nacisniecia[i] = 1;
         } else {
-          //wstaw(2);
           nacisniecia[i] = 2;
         }
         i++;
-        Serial.print(">>>   ");
-        Serial.println(i);
+        //Serial.print(">>>   ");
+        //Serial.println(i);
       }
     }
 
@@ -91,14 +87,6 @@ void loop() {
   }
   
   delay(10);
-}
-
-void wstaw(int wartosc) 
-{
-  for (int k = 3; k >= 0; k++) {
-    nacisniecia[k + 1] = nacisniecia[k];
-  }
-  nacisniecia[0] = wartosc;
 }
 
 void clearNacisniecia() 

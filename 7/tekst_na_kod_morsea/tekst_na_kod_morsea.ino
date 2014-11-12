@@ -1,7 +1,7 @@
 int incomingByte = 0;
 
-int pinBuzzer = 10;
-int pinLed = 12;
+int pinBuzzer = 3;
+int pinLed = 4;
 
 int dlugoscKropki = 100;  //  maksymalny czas na kropkę w ms
 
@@ -96,7 +96,7 @@ void loop() {
       case 'v': 
         beeps(1, 1, 1, 2);
         break;
-      case '2': 
+      case 'w': 
         beeps(1, 2, 2, 0);
         break;
       case 'x': 
