@@ -1,34 +1,76 @@
 int pin[5] = {2,3,4,5,6};
+int pinBuzzer = 10;
 
-bool state[5][5] = {
+int stateNo = 17;
+bool state[17][5] = {
+  
+  {0,0,0,0,0},
+
+  //  litera "O"  
+  {1,1,1,1,1},
   {1,0,0,0,1},
-  {0,1,0,1,0},
+  {1,0,0,0,1},
+  {1,1,1,1,1},
+  
+  //  spacja
+  {0,0,0,0,0},
+  {0,0,0,0,0}, 
+  {0,0,0,0,0},
+  {0,0,0,0,0},
+  {0,0,0,0,0},
+  {0,0,0,0,0},
+  
+  //  litera "K"
+  {0,0,0,0,0},
+  {1,1,1,1,1},
   {0,0,1,0,0},
   {0,1,0,1,0},
-  {1,0,0,0,1}
+  {1,0,0,0,1},
+  
+  {0,0,0,0,0}
 };
 
-int time = 50;
-int currectState = 4;
+int time = 10;
+int currectState = 0;
+int up = true;
 
 void setup() {
   for (int i = 0; i < 5; i++) {
     pinMode(pin[i], OUTPUT);
   }
+  pinMode(pinBuzzer, OUTPUT);
 }
 
 void loop() {
+  
+  if (currectState == stateNo / 2) {
+    analogWrite(pinBuzzer, 10 );
+  } else {
+    analogWrite(pinBuzzer, 0);
+  }
+  
   for (int i = 0; i < 5; i++) {
     digitalWrite(pin[i], state[currectState][i]);
   }
   
-  delay(time);
-  
-  for (int i = 0; i < 5; i++) {
-    digitalWrite(pin[i], state[currectState][i]);
+  if (up) {
+    currectState++;
+  } else {
+    currectState--;
   }
   
+  if (currectState == stateNo) {
+    up = false;
+    currectState = stateNo - 2;
+  }
+  if (currectState < 0) {
+    up = true;
+    currectState = 1;
+  }
+
   delay(time);
   
-  currectState = (currectState + 1) % 5;
+  if (currectState == 0 || currectState == stateNo) {
+    analogWrite(pinBuzzer, 0);
+  }
 }
