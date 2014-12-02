@@ -19,69 +19,48 @@ uint32_t pierwszySposob(uint32_t wartosc)
 	return wartosc;
 }
 
-
-uint32_t drugiSposob(uint32_t wartosc)
+//	odwracanie działa tylko dla 8 bitów
+uint8_t reverseBits(uint8_t b)
 {
-	uint32_t buffor;
-	uint32_t potega;
-	uint32_t odwroconaWartosc = 0;
-	short przesuniecie = 7;
-	short i;
-	
-	for (i = 32; i >= 0; i--) {
-		potega = pow(2, i);
-		buffor = wartosc;
-		
-		buffor = buffor & potega;
-		
-		if (i <= 15) {
-			buffor = buffor << przesuniecie;
-			przesuniecie += 2;
-		} else {
-			buffor = buffor >> przesuniecie;
-			przesuniecie -= 2;
-		}
-		
-		if (przesuniecie >= 0) {
-			przesuniecie = 1;
-		}
-		
-		odwroconaWartosc = odwroconaWartosc | buffor;
-	}
-	return odwroconaWartosc;
+	return ((b * 0x80200802ULL) & 0x0884422110ULL) * 0x0101010101ULL >> 32;
 }
 
-uint32_t trzeciSposob(uint32_t num)
+/**
+ * https://graphics.stanford.edu/~seander/bithacks.html#BitReverseObvious
+ * */
+uint32_t drugiSposob(uint32_t toReverse)
 {
-    uint32_t count = sizeof(num) * 32 - 1;
-    uint32_t reverse_num = num;
+	uint32_t inByte0 = (toReverse & 0xFF);
+	uint32_t inByte1 = (toReverse & 0xFF00) >> 8;
+	uint32_t inByte2 = (toReverse & 0xFF0000) >> 16;
+	uint32_t inByte3 = (toReverse & 0xFF000000) >> 24;
+	return (reverseBits(inByte0) << 24) | (reverseBits(inByte1) << 16) | (reverseBits(inByte2) << 8) | (reverseBits(inByte3));
+}
 
-    num >>= 1;
-    while(num)
+uint32_t trzeciSposob(uint32_t wartosc)
+{
+    uint32_t count = sizeof(wartosc) * 32 - 1;
+    uint32_t odwroconaWartosc = wartosc;
+
+    wartosc >>= 1;
+    while(wartosc)
     {
-       reverse_num <<= 1;
-       reverse_num |= num & 1;
-       num >>= 1;
+       odwroconaWartosc = odwroconaWartosc << 1;
+       odwroconaWartosc = odwroconaWartosc | (wartosc & 1);
+       wartosc = wartosc >> 1;
        count--;
     }
-    reverse_num <<= count;
-    return reverse_num;
-}
-
-suseconds_t timestamp() 
-{
-	struct timeval tval;
-	gettimeofday(&tval, NULL);
-	return tval.tv_usec;
+    odwroconaWartosc = odwroconaWartosc << count;
+    return odwroconaWartosc;
 }
 
 int main(void)
 {
-	uint32_t wartosc = 2;
+	uint32_t wartosc = 1231231212;
 
     printf("Liczba: %d\n", wartosc);
 
-	int iteracji = 10000000;
+	int iteracji = 50000000;
 	double elapsed; // in milliseconds
 	clock_t start, end;
 	start = clock();
