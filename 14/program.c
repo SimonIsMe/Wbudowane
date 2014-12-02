@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <math.h>
 #include <time.h>
+#include <sys/time.h>
 
 uint32_t pierwszySposob(uint32_t wartosc)
 {
@@ -67,12 +68,51 @@ uint32_t trzeciSposob(uint32_t num)
     return reverse_num;
 }
 
+suseconds_t timestamp() 
+{
+	struct timeval tval;
+	gettimeofday(&tval, NULL);
+	return tval.tv_usec;
+}
+
 int main(void)
 {
 	uint32_t wartosc = 2;
 
     printf("Liczba: %d\n", wartosc);
 
+	int iteracji = 10000000;
+	double elapsed; // in milliseconds
+	clock_t start, end;
+	start = clock();
+	for (int i = 0; i < iteracji; i++) {
+		pierwszySposob(wartosc);
+	}
+	end = clock();
+	elapsed = ((double) (end - start) * 1000) / CLOCKS_PER_SEC;
+	printf("1. sposób potrzebowal %f ms dla %d iteracji.\n", elapsed, iteracji);
+	
+	//##############################################
+	
+	start = clock();
+	for (int i = 0; i < iteracji; i++) {
+		drugiSposob(wartosc);
+	}
+	end = clock();
+	elapsed = ((double) (end - start) * 1000) / CLOCKS_PER_SEC;
+	printf("2. sposób potrzebowal %f ms dla %d iteracji.\n", elapsed, iteracji);
+	
+	//##############################################
+	
+	start = clock();
+	for (int i = 0; i < iteracji; i++) {
+		trzeciSposob(wartosc);
+	}
+	end = clock();
+	elapsed = ((double) (end - start) * 1000) / CLOCKS_PER_SEC;
+	printf("3. sposób potrzebowal %f ms dla %d iteracji.\n", elapsed, iteracji);
+	
+	
     printf("%d\n", pierwszySposob(wartosc));
     printf("%d\n", drugiSposob(wartosc));
     printf("%d\n", trzeciSposob(wartosc));
