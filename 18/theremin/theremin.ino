@@ -2,8 +2,8 @@
 #define MIN(a, b) (a < b ? a : b)
 #define MAX(a, b) (a > b ? a : b)
 
-#define RECMAXLEN 750
-#define SAMPLE 20
+#define RECMAXLEN 500
+#define SAMPLE 10
 
 char ldrPin = A0;
 char speakerPin = 9;
@@ -16,8 +16,10 @@ short playPosition = 0;
 long  lastProbe = 0; // millis
 
 char btnRecord = 7, btnPlay = 8;
+char btnSetFreq = 6;
 char btnRecordState = LOW,
-     btnPlayState = LOW;
+     btnPlayState = LOW,
+     btnSetFreqState = LOW;
 
 /* Modes: 0 -> normal, 1 -> playing */
 char mode = 0;
@@ -52,6 +54,10 @@ void setup()
         ldrMin = MIN(ldrRead, ldrMin);
         delay(10);
     }
+    
+    // turn of auto-tune
+    ldrMax = 1000;
+    ldrMin = 0;
     
     factor = (double)(freqMax - freqMin) / (double)(ldrMax - ldrMin); 
     shift = factor * ldrMin - freqMin;
@@ -120,6 +126,18 @@ void loop()
             setMode(1);
             startPlaying();
         }
+    }
+    
+    btnRead = digitalRead(btnSetFreq);
+    if (btnRead != btnSetFreqState) {
+        btnSetFreqState = btnRead;
+      
+        if (btnSetFreqState == HIGH && mode == 0) {
+            ldrRead = analogRead(ldrPin);
+            ldrMin = ldrRead;
+            factor = (double)(freqMax - freqMin) / (double)(ldrMax - ldrMin); 
+            shift = factor * ldrMin - freqMin;        
+        }  
     }
 
     if (mode == 0) {
