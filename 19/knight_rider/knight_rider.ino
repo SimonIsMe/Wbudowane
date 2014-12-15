@@ -172,7 +172,7 @@ void loop()
   for (short i = 0; i < pins; i++) {
     active[i] = 0;
   }
-  active[prevActivePin] = 150;
+  active[prevActivePin] = 50;
   active[activePin] = 255;
   
   prevActivePin = activePin;
