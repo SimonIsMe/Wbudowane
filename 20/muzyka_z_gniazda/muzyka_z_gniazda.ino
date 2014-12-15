@@ -9,7 +9,7 @@ IPAddress ip(192, 168, 1, 2);
 
 unsigned int localPort = 1111;      // local port to listen on
 
-char packetBuffer[2/*UDP_TX_PACKET_MAX_SIZE*/]; //buffer to hold incoming packet,
+char packetBuffer[2]; //buffer to hold incoming packet,
 
 EthernetUDP Udp;
 
@@ -36,7 +36,7 @@ void loop() {
     Serial.print(" ");
     Serial.println((unsigned int) packetBuffer[1]);
     
-    tone(speakerPin, map((unsigned int) packetBuffer[1], 0, 128, 131, 1048);
+    tone(speakerPin, map((unsigned int) packetBuffer[1], 0, 128, 131, 1048));
   }
   
   delay(10);
