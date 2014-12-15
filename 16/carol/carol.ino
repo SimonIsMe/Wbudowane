@@ -116,6 +116,8 @@ void setup() {
   pinMode(pins[2], OUTPUT);  
   
   Serial.begin(9600);
+  
+  digitalWrite(pins[2], HIGH);
 }
 
 short i = 0;
@@ -143,5 +145,5 @@ void loop() {
     digitalWrite(pins[1], HIGH);
   }
   
-  digitalWrite(pins[2], HIGH);
+  
 }
