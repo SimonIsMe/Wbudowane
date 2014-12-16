@@ -43,7 +43,7 @@ public class UDPSend {
                 DatagramSocket dsocket = new DatagramSocket();
                 dsocket.send(packet);
                 
-                Thread.sleep(500 + random.nextInt(500));
+                Thread.sleep(10 + random.nextInt(500));
                 dsocket.close();
             }
         } catch (Exception e) {

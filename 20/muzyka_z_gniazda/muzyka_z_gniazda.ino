@@ -1,15 +1,15 @@
 
-#include <SPI.h>         // needed for Arduino versions later than 0018
+#include <SPI.h>  
 #include <Ethernet.h>
-#include <EthernetUdp.h>         // UDP library from: bjoern@cs.stanford.edu 12/30/2008
+#include <EthernetUdp.h>        
 
 byte mac[] = {  
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 1, 2);
 
-unsigned int localPort = 1111;      // local port to listen on
+unsigned int localPort = 1111;     
 
-char packetBuffer[2]; //buffer to hold incoming packet,
+char packetBuffer[2]; 
 
 EthernetUDP Udp;
 
