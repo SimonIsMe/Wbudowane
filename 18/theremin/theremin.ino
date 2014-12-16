@@ -46,7 +46,7 @@ void setup()
     
     /* Calibration loop: determine resonable min/max
        values of LDR reads and map them to frequencies. */
-    digitalWrite(ledRed, HIGH);
+    /*digitalWrite(ledRed, HIGH);
     for (i = 0; i < 500; ++i) {         // takes 5 seconds
         ldrRead = analogRead(ldrPin);
         tone(speakerPin, ldrRead);      // raw tone, calibration helper
@@ -54,6 +54,7 @@ void setup()
         ldrMin = MIN(ldrRead, ldrMin);
         delay(10);
     }
+    digitalWrite(ledRed, LOW);*/
     
     // turn of auto-tune
     ldrMax = 1000;
@@ -61,10 +62,6 @@ void setup()
     
     factor = (double)(freqMax - freqMin) / (double)(ldrMax - ldrMin); 
     shift = factor * ldrMin - freqMin;
-    
-    digitalWrite(ledRed, LOW);
-    
-    Serial.begin(9600);
 }
 
 inline void setMode(char m)
@@ -129,12 +126,13 @@ void loop()
     }
     
     btnRead = digitalRead(btnSetFreq);
-    if (btnRead != btnSetFreqState) {
+    if (btnRead != btnSetFreqState) {  // event: minfreq button state has changed
         btnSetFreqState = btnRead;
       
-        if (btnSetFreqState == HIGH && mode == 0) {
+        if (btnSetFreqState == HIGH && mode == 0) {  // event: minfreq button state has been pressed
             ldrRead = analogRead(ldrPin);
             ldrMin = ldrRead;
+            
             factor = (double)(freqMax - freqMin) / (double)(ldrMax - ldrMin); 
             shift = factor * ldrMin - freqMin;        
         }  
@@ -142,7 +140,6 @@ void loop()
 
     if (mode == 0) {
         ldrRead = analogRead(ldrPin);
-        //freq = map(ldrRead, ldrMin, ldrMax, freqMin, freqMax);
         freq = factor * ldrRead - shift;
         
         normf = freq / (double)freqMin;
@@ -166,7 +163,7 @@ void loop()
     }
     
     if (mode == 1) {
-        Serial.print(playPosition); Serial.print("  "); Serial.println(recordLen);
+        //Serial.print(playPosition); Serial.print("  "); Serial.println(recordLen);
         if (playPosition < recordLen) {
             tone(speakerPin, record[playPosition]);
             probe = millis();
