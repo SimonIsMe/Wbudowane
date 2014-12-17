@@ -1,7 +1,7 @@
 
 short pins = 4;
-short pin[] = {12, 11, 10, 9};
-short pinTone = 13;
+short pin[] = {5, 4, 3, 2};
+short pinTone = 9;
 
 int melody[] = {
   659,

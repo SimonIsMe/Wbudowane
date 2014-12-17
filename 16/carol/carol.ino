@@ -93,7 +93,7 @@
 
 int pinSpeaker = 9;
 
-int pins[] = {13, 12, 11};
+int pins[] = {7, 6, 5};
 
 int melody[] = {NG4,NC5,NC5,ND5,NC5,NB4,NA4,NA4,NA4,ND5,ND5,NE5,ND5,NC5,NB4,NG4,
      NG4,NE5,NE5,NF5,NE5,ND5,NC5,NA5,NG4,NG4,NA4,ND5,NB4,NC5,

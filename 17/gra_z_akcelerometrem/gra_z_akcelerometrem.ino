@@ -13,7 +13,7 @@ unsigned long time;
 unsigned long timeDifference = 0;
 bool changed = true;
 
-short tolerance = 100;
+short tolerance = 10;
 
 bool gameOver = false;
 
