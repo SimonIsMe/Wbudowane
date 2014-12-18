@@ -142,6 +142,9 @@ void loop()
         ldrRead = analogRead(ldrPin);
         freq = factor * ldrRead - shift;
         
+        /* Round frequency to the nearest note.
+           Uses pentathonic scale: CDEGAC, 
+           note_freq(n) = C * sqrt(5)^(n)  */
         normf = freq / (double)freqMin;
         logf = log(normf) / log(gap);
         ilogf = round(logf);
