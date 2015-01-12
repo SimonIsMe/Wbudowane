@@ -46,15 +46,16 @@ void setup()
     
     /* Calibration loop: determine resonable min/max
        values of LDR reads and map them to frequencies. */
-    /*digitalWrite(ledRed, HIGH);
-    for (i = 0; i < 500; ++i) {         // takes 5 seconds
+    digitalWrite(ledRed, HIGH);
+    //for (i = 0; i < 500; ++i) {         // takes 5 seconds
+    while (millis() < 5000) {
         ldrRead = analogRead(ldrPin);
         tone(speakerPin, ldrRead);      // raw tone, calibration helper
         ldrMax = MAX(ldrRead, ldrMax);
         ldrMin = MIN(ldrRead, ldrMin);
-        delay(10);
+        delay(SAMPLE);
     }
-    digitalWrite(ledRed, LOW);*/
+    digitalWrite(ledRed, LOW);
     
     // turn of auto-tune
     ldrMax = 1000;
@@ -163,6 +164,7 @@ void loop()
         }
         
         tone(speakerPin, freq);
+        delay(SAMPLE);
     }
     
     if (mode == 1) {
